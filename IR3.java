@@ -10,6 +10,9 @@ public class IR3 {
     static int documentInfo[][] ;
     static HashMap<Integer, Double> docsW1= new HashMap<Integer, Double>();
     static HashMap<Integer, Double> docsW2= new HashMap<Integer, Double>();
+    static LinkedHashMap<Integer, Double> sortedDocsW1= new LinkedHashMap<Integer, Double>();
+    static LinkedHashMap<Integer, Double> sortedDocsW2= new LinkedHashMap<Integer, Double>();
+
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
@@ -64,6 +67,8 @@ public class IR3 {
             generateW1(index, i);
             generateW2(index, i);
         }
+        sortedDocsW1= sortDoc(docsW1);
+        sortedDocsW2= sortDoc(docsW2);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,6 +109,22 @@ public class IR3 {
         System.out.print(w2 + "\n");
     }
 
+    private static LinkedHashMap<Integer, Double> sortDoc(final HashMap<Integer, Double> docs){
+        Comparator<Map.Entry<Integer, Double>> comparator = new Comparator<Map.Entry<Integer, Double>>() {
+
+            public int compare(Map.Entry<Integer,Double> o1, Map.Entry<Integer, Double> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+            }
+        };
+        LinkedList<Map.Entry<Integer, Double>> linkedList= new LinkedList<Map.Entry<Integer, Double>>(docs.entrySet());
+        Collections.sort(linkedList, comparator);
+        LinkedHashMap<Integer, Double> sortedTokens = new LinkedHashMap<Integer, Double>();
+        for(Map.Entry<Integer, Double> entry:linkedList){
+            sortedTokens.put(entry.getKey(), entry.getValue());
+        }
+        return sortedTokens;
+
+    }
     @SuppressWarnings("unchecked")
     private static double avgdoclen(TreeMap<String, TreeMap<Integer, Integer>> index){
         double avg=0.0;
