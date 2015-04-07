@@ -22,7 +22,8 @@ public class Lemmatizer {
     public Lemmatizer() {
         properties = new Properties();
         properties.put("annotators", "tokenize, ssplit, pos, lemma");
-        pipeline = new StanfordCoreNLP(properties);
+        this.pipeline = new StanfordCoreNLP(properties);
+
     }
 
 
