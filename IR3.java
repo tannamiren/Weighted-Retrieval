@@ -1,3 +1,5 @@
+import org.jsoup.Jsoup;
+
 import java.io.*;
 import java.util.*;
 
@@ -20,6 +22,8 @@ public class IR3 {
         String queryFile= "hw3.queries";
         String indexFile= "Index_Version1.uncompressed";
         String documentsInfo= "documentsInfo";
+        String cranfieldDirectory="./Cranfield_Collection";
+        //TODO: update cranfield path
         try {
             TreeMap<String, String> stopwordsMap= getStopWords(stopwordsFile);
             String[] queries= getQueryFile(queryFile);
@@ -28,20 +32,43 @@ public class IR3 {
             //currently using stemmed document info
             readIndex(indexFile);
             readDocInfo(documentsInfo);
+            int queryNumber=1;
             for(String query: queries){
 
                 if(query.length()>0){
                 indexQuery(query, stopwordsMap);
-                //Todo: generate ranking
                 generateRanking(index, documentInfo);
                     //TODO: update W1 and W2 based on df clarification
+                    System.out.println("**********************************************");
+                    System.out.println("Q" + queryNumber + ": " + query);
+                    System.out.println("Using W1:");
+                    System.out.println("Rank\t| Score\t\t| Doc ID| Headline");
+                    System.out.println("-------------------------------------------------------------------------------------------------");
+                    int totalQueries=0;
+                    for (Integer docID: sortedDocsW1.keySet()){
+                        if(totalQueries<5){
+                            System.out.println(totalQueries+1 + "\t| " + String.format("%4f", sortedDocsW1.get(docID)) + "\t| " + docID + "\t| " + getTitle(cranfieldDirectory, docID));
+                            totalQueries++;
+                        }
+                    }
+                    System.out.println("\nUsing W2:");
+                    System.out.println("Rank\t| Score\t\t| Doc ID| Headline");
+                    System.out.println("-------------------------------------------------------------------------------------------------");
+                    totalQueries=0;
+                    for (Integer docID: sortedDocsW2.keySet()){
+                        if(totalQueries<5){
+                            System.out.println(totalQueries+1 + "\t| " + String.format("%4f", sortedDocsW2.get(docID)) + "\t| " + docID + "\t| " + getTitle(cranfieldDirectory, docID));
+                            totalQueries++;
+                        }
+                    }
+                    System.out.println("*****************End of Query # " + queryNumber + "****************************");
+                queryNumber++;
                 }
             }
   //          System.out.println(docsW1);
-            System.out.println("end");
+  //          System.out.println("end");
 
         } catch (FileNotFoundException e) {
-
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +79,11 @@ public class IR3 {
 
     }
 
+    private static String getTitle(String cranfieldPath, int docID) throws IOException {
+        File file= new File(cranfieldPath + "/cranfield" + String.format("%04d", docID));
+        org.jsoup.nodes.Document document= Jsoup.parse(file, "UTF-8");
+        return document.select("TITLE").text().replace("\n", " ");
+    }
     @SuppressWarnings("unchecked")
     private static void readDocInfo(String filename) throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream= new FileInputStream(new File(filename));
@@ -63,7 +95,7 @@ public class IR3 {
     @SuppressWarnings("unchecked")
     private static void generateRanking(TreeMap<String, TreeMap<Integer, Integer>> index, int[][] documentInfo){
         for(int i=1; i<documentInfo.length; i++){
-            System.out.print(i + " --> ");
+     //       System.out.print(i + " --> ");
             generateW1(index, i);
             generateW2(index, i);
         }
@@ -87,7 +119,7 @@ public class IR3 {
             }
         }
         docsW1.put(docID, w1);
-        System.out.print(w1 + " --> ");
+ //       System.out.print(w1 + " --> ");
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +138,7 @@ public class IR3 {
             }
         }
         docsW2.put(docID, w2);
-        System.out.print(w2 + "\n");
+  //      System.out.print(w2 + "\n");
     }
 
     private static LinkedHashMap<Integer, Double> sortDoc(final HashMap<Integer, Double> docs){
