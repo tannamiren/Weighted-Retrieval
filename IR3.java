@@ -21,15 +21,13 @@ public class IR3 {
         String stopwordsFile="stopwords";
         String queryFile= "hw3.queries";
         String indexFile= "Index_Version1.uncompressed";
-        String documentsInfo= "documentsInfo";
+        String documentsInfo= "documentsInfo2";
         String cranfieldDirectory="./Cranfield_Collection";
         //TODO: update cranfield path
         try {
             TreeMap<String, String> stopwordsMap= getStopWords(stopwordsFile);
             String[] queries= getQueryFile(queryFile);
 
-            //TODO: update document info file with lemmas from IR2!
-            //currently using stemmed document info
             readIndex(indexFile);
             readDocInfo(documentsInfo);
             int queryNumber=1;
@@ -38,8 +36,7 @@ public class IR3 {
                 if(query.length()>0){
                 indexQuery(query, stopwordsMap);
                 generateRanking(index, documentInfo);
-                    //TODO: update W1 and W2 based on df clarification
-                    System.out.println("**********************************************");
+                    System.out.println("**********************************************\n");
                     System.out.println("Q" + queryNumber + ": " + query);
                     System.out.println("Using W1:");
                     System.out.println("Rank\t| Score\t\t| Doc ID| Headline");
@@ -272,7 +269,7 @@ public class IR3 {
   //          System.out.println(line);
             if(line.length()>0)
             {
-                sb.append(line).append("");
+                sb.append("").append(line).append(" ");
  //               System.out.println(sb);
             }
 
