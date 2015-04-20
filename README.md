@@ -283,3 +283,22 @@ collection. It also depends of tf to an extent. So chance of finding the relevan
 
 
 ###Program Description:
+* Initially, the program accepts the directory path of the Cranfield Collection, stopwords, query file, uncompressed index
+  and document info file as a command line argument.
+
+* The stopwords are read from the file and stored into a **TreeMap**.
+
+* The queries are read from the file and stored in an array of Strings. Any string that matches the regular expression of
+*`Q[0-9:]+`* is discarded.
+
+* We now call the `generateRanking` method, which accepts the uncompressed index and document info as an argument.
+This method traverses through the document info and calculates W1 and W2 by calling `generateW1` and `generateW2` method.
+
+* Value of W1 and W2 is calculated by using the formula and is stored into a **HashMap**.
+
+* Once the weights have been stored into the HashMap, the data structure is sorted in decreasing order by calling the
+`sortedDocsW1` and `sortedDocsW2` methods for corresponding weighting schemes.
+
+* The rank, score, external document identifier, and headline, for each of the top 5 documents for each query is displayed.
+
+* Data structures used in the program are **TreeMap**, **HashMap**, **LinkedHashMap**.
