@@ -32,8 +32,8 @@ Includes statements to compile the main program.
 Includes statements to run the main program. The location of Cranfield documents is passed to the program.
 
 ###Formulas used:
-![W1](https://github.com/tannamiren/Weighted-Retrieval/blob/master/output/W1.PNG)<br><br>
-![W2](https://github.com/tannamiren/Weighted-Retrieval/blob/master/output/W2.PNG)
+![W1](https://github.com/tannamiren/Weighted-Retrieval/blob/master/output/W1.jpg)<br><br>
+![W2](https://github.com/tannamiren/Weighted-Retrieval/blob/master/output/W2.jpg)
 
 ###Relevant and Non-Relevant Queries:
 ![Q1](https://github.com/tannamiren/Weighted-Retrieval/blob/master/output/Q1.PNG)<br>
